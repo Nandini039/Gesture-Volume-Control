@@ -1,0 +1,9 @@
+Flask
+requests
+pycaw
+streamlit
+Pillow
+opencv-python
+numpy
+pandas
+mediapipe
