@@ -1,4 +1,4 @@
-🔊 Volume Control With Hand Gesture 
+🔊 Volume Control Using Hand Gesture 
 
 Project Overview
 This application is a real-time Human-Computer Interaction (HCI) system that enables touchless control over your computer's master audio volume using a webcam. The core function is to track a simple hand gesture and precisely map the measured distance to the system's sound level.
@@ -20,7 +20,9 @@ app.py (Backend): This is the Processing Engine. It handles the webcam input, ru
 streamlit_app.py (Frontend): This is the User Interface and Control Layer. It fetches the real-time data from Flask, executes the PyCaw volume change, and displays the interactive dashboard and charts.
 
 🚀 Getting Started
+
 Prerequisites
+
 You need Python 3.8+, a functional Webcam, and a Windows OS (required for the PyCaw volume control library).
 
 Installation and Setup
