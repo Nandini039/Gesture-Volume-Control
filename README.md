@@ -50,6 +50,7 @@ Bash
 streamlit run streamlit_app.py
 
 Control Usage
+
 The dashboard will open in your browser.
 
 To lower the volume, pinch your thumb and index finger closer together.
