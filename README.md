@@ -1,8 +1,10 @@
 🔊 Hand Gesture Volume Control System
+
 Project Overview
 This application is a real-time Human-Computer Interaction (HCI) system that enables touchless control over your computer's master audio volume using a webcam. The core function is to track a simple hand gesture and precisely map the measured distance to the system's sound level.
 
 How It Works
+
 Vision Processor (app.py): The system uses MediaPipe to detect the 21 landmarks of your hand. It focuses on the distance between the Thumb Tip and the Index Finger Tip.
 
 Control Logic: The pixel distance is calculated, and NumPy maps that value to the specific decibel range required by your operating system.
@@ -10,6 +12,7 @@ Control Logic: The pixel distance is calculated, and NumPy maps that value to th
 System Output: PyCaw (on Windows) then applies the precise volume change, and Streamlit renders the visual dashboard, including the live video feed and a dynamic volume bar.
 
 🛠️ Project Components
+
 The project runs on a decoupled architecture using two main files:
 
 app.py (Backend): This is the Processing Engine. It handles the webcam input, runs the MediaPipe hand tracking, calculates the finger distance and count, and serves all data via an API.
@@ -47,7 +50,7 @@ Bash
 streamlit run streamlit_app.py
 
 Control Usage
-The dashboard will open in your browser (http://localhost:8501/).
+The dashboard will open in your browser.
 
 To lower the volume, pinch your thumb and index finger closer together.
 
