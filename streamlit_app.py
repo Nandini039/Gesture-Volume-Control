@@ -38,7 +38,7 @@ chart_placeholder = st.empty()
 FLASK_API_URL = "http://localhost:5000"
 
 def update_volume(vol_per):
-    smoothed_vol_per = 0.8 * vol_per + 0.2 * st.session_state.last_vol_per
+    smoothed_vol_per = 0.3 * vol_per + 0.7 * st.session_state.last_vol_per
     st.session_state.last_vol_per = smoothed_vol_per
     
     if VOL_CONTROL_ACTIVE:
