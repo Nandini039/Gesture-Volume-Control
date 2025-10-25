@@ -59,6 +59,7 @@ To lower the volume, pinch your thumb and index finger closer together.
 
 To raise the volume, spread your fingers apart.
 
-OUTPUT:
+OUTPUT (UI):
 
-<img width="1920" height="1020" alt="Screenshot 2025-10-25 144255" src="https://github.com/user-attachments/assets/29d96f89-58be-48f3-a1bf-1e30b89b9a90" />
+<img width="1920" height="808" alt="Screenshot 2025-10-25 144255" src="https://github.com/user-attachments/assets/3df01078-5da3-4a29-8352-9eb7f52e8b98" />
+
