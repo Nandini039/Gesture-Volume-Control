@@ -2,7 +2,7 @@ import cv2
 import mediapipe as mp
 import math
 import numpy as np
-from flask import Flask, Response, jsonify
+from flask import Flask, Response, jsonify, request
 from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
@@ -16,14 +16,16 @@ global_data = {
     'distance': 0,
     'vol_per': 0,
     'finger_count': 0,
+    'status': 'STOPPED',
 }
+
+CAMERA_ACTIVE = threading.Event()
 
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(min_detection_confidence=0.7, min_tracking_confidence=0.5)
 mp_draw = mp.solutions.drawing_utils
 cap = cv2.VideoCapture(0)
 
-# ADDED: Force a smaller resolution for better performance
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
@@ -58,6 +60,8 @@ def process_frame():
     global global_data
     
     while cap.isOpened():
+        CAMERA_ACTIVE.wait() 
+        
         success, img = cap.read()
         if not success:
             continue
@@ -89,6 +93,10 @@ def process_frame():
                 
                 cv2.putText(img, f'Fingers: {finger_count_val}', (10, 70), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 255, 0), 3)
 
+            global_data['status'] = 'ACTIVE'
+        else:
+            global_data['status'] = 'IDLE'
+
         cv2.putText(img, f'Distance: {distance:.1f}px', (10, 30), cv2.FONT_HERSHEY_PLAIN, 1.5, (255, 255, 255), 2)
         
         ret, buffer = cv2.imencode('.jpg', img)
@@ -103,9 +111,11 @@ def process_frame():
 
 def generate_frames():
     while True:
-        if global_data['frame']:
+        if CAMERA_ACTIVE.is_set() and global_data['frame']:
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + global_data['frame'] + b'\r\n')
+        elif not CAMERA_ACTIVE.is_set():
+            time.sleep(0.5)
         else:
             time.sleep(0.1)
 
@@ -119,7 +129,20 @@ def gesture_data():
         'distance': global_data['distance'],
         'vol_per': global_data['vol_per'],
         'finger_count': global_data['finger_count'],
+        'status': global_data['status'],
     })
+
+@app.route('/control_camera/<action>', methods=['POST'])
+def control_camera(action):
+    if action == 'start':
+        CAMERA_ACTIVE.set()
+        global_data['status'] = 'STARTING'
+        return jsonify({'status': 'Camera started successfully'}), 200
+    elif action == 'stop':
+        CAMERA_ACTIVE.clear()
+        global_data['status'] = 'STOPPED'
+        return jsonify({'status': 'Camera stopped successfully'}), 200
+    return jsonify({'error': 'Invalid action'}), 400
 
 threading.Thread(target=process_frame, daemon=True).start()
 
