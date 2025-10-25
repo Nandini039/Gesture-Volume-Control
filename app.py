@@ -22,6 +22,8 @@ mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(min_detection_confidence=0.7, min_tracking_confidence=0.5)
 mp_draw = mp.solutions.drawing_utils
 cap = cv2.VideoCapture(0)
+
+# ADDED: Force a smaller resolution for better performance
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
