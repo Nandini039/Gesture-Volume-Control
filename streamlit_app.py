@@ -248,10 +248,10 @@ if authenticator:
                          st.info("Chart will populate upon start.")
 
             except requests.exceptions.ConnectionError:
-                video_placeholder.error("Flask Backend not running. Please start the Flask app (app.py) first.")
+                video_and_chart_placeholder.error("Flask Backend not running. Please start the Flask app (app.py) first.")
                 time.sleep(5)
             except Exception as e:
-                video_placeholder.error(f"An unexpected error occurred: {e}")
+                video_and_chart_placeholder.error(f"An unexpected error occurred: {e}")
                 time.sleep(1)
 
             time.sleep(0.05)
