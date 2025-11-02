@@ -30,12 +30,12 @@ cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
 devices = AudioUtilities.GetSpeakers()
-# 💥 FIX APPLIED HERE: Using IAudioEndpointVolume._iid_ to provide the expected GUID
 interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
 volume = cast(interface, POINTER(IAudioEndpointVolume))
 vol_range = volume.GetVolumeRange()
 min_vol = vol_range[0]
 max_vol = vol_range[1]
+
 
 MIN_DIST = 30
 MAX_DIST = 200

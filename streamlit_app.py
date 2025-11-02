@@ -9,6 +9,132 @@ from comtypes import CLSCTX_ALL
 from pycaw.pycaw import IAudioEndpointVolume
 import streamlit_authenticator as stauth
 
+
+def add_custom_css():
+   
+        st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background-color: #f0f2f6; 
+            color: #1c1e21; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }}
+        .stApp h1 {{
+            color: rgb(94 156 215); 
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }}
+
+        [data-testid="stForm"] > div:first-child {{
+            background-color: #ffffff; 
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px; 
+            margin: auto;
+        }}
+
+        .stTextInput > div > div > input {{
+            background-color: #f7f7f7;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }}
+        
+        [data-testid="stForm"] button {{
+            background-color: #4CAF50; 
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            transition: background-color 0.3s;
+        }}
+
+        [data-testid="stForm"] button:hover {{
+            background-color: #45a049;
+        }}
+        
+        [data-testid="stAlert"] {{
+            border-left: 5px solid #ff9800 !important; 
+            background-color: #fff3e0 !important; 
+            color: #e65100 !important;
+            font-weight: bold;
+            border-radius: 5px;
+            max-width: 400px;
+            margin: 15px auto; 
+        }}
+
+        div.block-container {{
+            background-color:  rgba(255, 255, 255, 0.9)  !important;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem; 
+            padding: 2rem !important; 
+        }}
+
+        .stApp {{
+            background-color: #f0f2f6; 
+            color: #1c1e21;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }}
+
+       
+        .stApp h1 {{
+            color: rgb(94 156 215); 
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }}
+
+        [data-testid="stSidebar"] {{
+            background-color: #ffffff; 
+            border-right: 1px solid #ddd;
+            padding: 10px;
+        }}
+        
+        
+        [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {{
+            color: #1c1e21;
+        }}
+
+        .stSlider .st-bd {{
+            background-color: #e0e0e0; 
+        }}
+        .stSlider .st-bg {{
+            background-color: #4CAF50; 
+        }}
+
+        [data-testid="stMetric"] {{
+            background-color: #ffffff;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }}
+
+        [data-testid="stMetricValue"] {{
+            font-size: 1.5rem !important;
+            color: #007bff;
+        }}
+
+        .stProgress > div > div > div > div {{
+            background-color: #4CAF50; 
+        }}
+        
+        .stImage {{
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }}
+
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
 min_vol = -65.25
 max_vol = 0.0
 VOL_CONTROL_ACTIVE = False
@@ -98,6 +224,7 @@ def update_volume(vol_per):
 
 
 st.set_page_config(layout="wide")
+add_custom_css()
 st.title("Hand-Gesture Volume Controller")
 
 if authenticator:
@@ -108,6 +235,7 @@ if authenticator:
         name, st.session_state['authentication_status'], username = result
         st.session_state['name'] = name
         st.session_state['username'] = username
+        
     
     if st.session_state['authentication_status'] is True:
         
@@ -192,14 +320,16 @@ if authenticator:
                             st.markdown(f'<p style="font-size: 14px; margin-bottom: 0px;">Gesture</p>', unsafe_allow_html=True)
                             st.metric("", gesture_name, color_emoji)
                         with colB:
-                            st.metric("Fingers Open", f"{finger_count_val}")
+                            st.markdown(f'<p style="font-size: 14px; margin-bottom: 5px;">Finger Open</p>', unsafe_allow_html=True)
+                            st.metric("", f"{finger_count_val}")
                             
                         colC, colD = st.columns(2)
                         with colC:
                             st.markdown(f'<p style="font-size: 14px; margin-bottom: 0px;">Finger Distance</p>', unsafe_allow_html=True)
                             st.metric("", f"{distance:.1f} px")
                         with colD:
-                            st.metric("Camera Status", camera_status)
+                            st.markdown(f'<p style="font-size: 14px; margin-bottom: 1px;">Camera Status</p>', unsafe_allow_html=True)
+                            st.metric("", camera_status)
 
                         with st.expander("System Performance"):
                             colE, colF = st.columns(2)
@@ -212,7 +342,7 @@ if authenticator:
                     
                     with video_and_chart_placeholder.container():
                         
-                        st.image(f"{FLASK_API_URL}/video_feed", caption=f"Live Webcam Feed | Status: {camera_status}", use_container_width=True)
+                        st.image(f"{FLASK_API_URL}/video_feed", caption=f"Live Webcam Feed | Status: {camera_status}", use_container_width=False ,width=500)
                         
                         st.markdown("---")
                         
