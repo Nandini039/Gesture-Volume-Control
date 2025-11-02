@@ -61,5 +61,14 @@ To raise the volume, spread your fingers apart.
 
 OUTPUT (UI):
 
-<img width="1920" height="808" alt="Screenshot 2025-10-25 144255" src="https://github.com/user-attachments/assets/3df01078-5da3-4a29-8352-9eb7f52e8b98" />
+
+
+
+<img width="1920" height="879" alt="Login Page" src="https://github.com/user-attachments/assets/ec44542b-3481-4914-84e1-c7d0042f977d" />
+
+
+<img width="1920" height="886" alt="Output2" src="https://github.com/user-attachments/assets/a9c0e43e-defa-44fc-8797-4532fc9654b0" />
+
+
+<img width="1920" height="866" alt="Output 1" src="https://github.com/user-attachments/assets/319fc968-907f-4b04-850d-8e5085e8c478" />
 
