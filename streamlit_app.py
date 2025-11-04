@@ -8,6 +8,7 @@ from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
 from pycaw.pycaw import IAudioEndpointVolume
 import streamlit_authenticator as stauth
+import pyautogui
 
 
 def add_custom_css():
@@ -21,6 +22,7 @@ def add_custom_css():
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }}
         .stApp h1 {{
+            background-color: #13323D ; 
             color: rgb(94 156 215); 
             font-size: 2.5rem;
             text-align: center;
@@ -28,25 +30,25 @@ def add_custom_css():
         }}
 
         [data-testid="stForm"] > div:first-child {{
-            background-color: #ffffff; 
+            background-color: rgb(145 158 234 / 40%); 
             padding: 20px 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px; 
+            border-radius: 15px;
+            box-shadow: 1 6px 20px rgba(0, 0, 0, 0.1) ;
+            max-width: 450px; 
             margin: auto;
         }}
 
         .stTextInput > div > div > input {{
             background-color: #f7f7f7;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            padding: 10px;
+            border-radius: 8px;
+            border: 2px solid #ccc;
+            padding: 20px;
         }}
         
         [data-testid="stForm"] button {{
-            background-color: #4CAF50; 
+            background-color: #13323d;
             color: white;
-            border-radius: 5px;
+            border-radius: 4px;
             padding: 10px 20px;
             font-size: 1rem;
             font-weight: bold;
@@ -55,7 +57,7 @@ def add_custom_css():
         }}
 
         [data-testid="stForm"] button:hover {{
-            background-color: #45a049;
+            background-color: #43A047;
         }}
         
         [data-testid="stAlert"] {{
@@ -91,27 +93,27 @@ def add_custom_css():
         }}
 
         [data-testid="stSidebar"] {{
-            background-color: #ffffff; 
+            background-color: #3f7a8c; 
             border-right: 1px solid #ddd;
             padding: 10px;
         }}
         
         
         [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3 {{
-            color: #1c1e21;
+            color:#101214;
         }}
 
         .stSlider .st-bd {{
-            background-color: #e0e0e0; 
+            background-color: #bdbdbd; 
         }}
         .stSlider .st-bg {{
             background-color: #4CAF50; 
         }}
 
         [data-testid="stMetric"] {{
-            background-color: #ffffff;
+            background-color: #CFD8DC;
             padding: 10px;
-            border-radius: 8px;
+            border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }}
 
@@ -211,16 +213,28 @@ def send_camera_command(action):
 def update_volume(vol_per):
     factor = st.session_state['SMOOTHING_FACTOR']
 
+   
     smoothed_vol_per = (1 - factor) * vol_per + factor * st.session_state['last_vol_per']
+
+    previous_vol = st.session_state['last_vol_per']
     st.session_state['last_vol_per'] = smoothed_vol_per
 
-    vol = min_vol
+    diff = smoothed_vol_per - previous_vol
 
-    if VOL_CONTROL_ACTIVE:
-        vol = np.interp(smoothed_vol_per, [0, 100], [min_vol, max_vol])
-        volume.SetMasterVolumeLevel(float(vol), None)
+    
+    threshold = 2.5  
 
-    return int(smoothed_vol_per), vol
+    if diff > threshold:
+        steps = int(diff // threshold)
+        for _ in range(steps):
+            pyautogui.press("volumeup")
+    elif diff < -threshold:
+        steps = int(abs(diff) // threshold)
+        for _ in range(steps):
+            pyautogui.press("volumedown")
+
+    
+    return int(smoothed_vol_per), 0
 
 
 st.set_page_config(layout="wide")
